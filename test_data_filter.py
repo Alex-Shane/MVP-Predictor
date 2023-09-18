@@ -4,10 +4,10 @@ import copy
 def format_fielding(filename):
     # cut off top 4 lines (whitespace) and remove all pitchers
     df_fielding = pd.read_excel(filename, header = 4)
-    df_fielding = df_fielding[df_fielding['Pos Summary'] != 'P']
+    df_fielding = df_fielding[df_fielding['Pos Summary'] != 'P']
 
     # check if any pitchers left
-    test = df_fielding[df_fielding['Pos Summary'] == 'P']
+    test = df_fielding[df_fielding['Pos Summary'] == 'P']
     assert(not test.shape[0])
 
     df_fielding=df_fielding.iloc[:, 1:]
@@ -74,7 +74,7 @@ def filter_firstname_lastname(df):
 
 def merge(df1, df2):
     # Extract the specified columns from df1
-    columns_to_add = ['Tm', 'Lg', 'G', 'GS', 'Rtot', 'Pos Summary']
+    columns_to_add = ['Tm', 'Lg', 'G', 'GS', 'Rtot', 'Pos Summary']
     df_to_add = df1[columns_to_add]
 
     df_merged = df2
