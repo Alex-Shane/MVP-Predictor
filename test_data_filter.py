@@ -4,10 +4,10 @@ import copy
 def format_fielding(filename):
     # cut off top 4 lines (whitespace) and remove all pitchers
     df_fielding = pd.read_excel(filename, header = 4)
-    df_fielding = df_fielding[df_fielding['Pos Summary'] != 'P']
+    df_fielding = df_fielding[df_fielding['Pos'] != 'P']
 
     # check if any pitchers left
-    test = df_fielding[df_fielding['Pos Summary'] == 'P']
+    test = df_fielding[df_fielding['Pos'] == 'P']
     assert(not test.shape[0])
 
     df_fielding=df_fielding.iloc[:, 1:]
@@ -74,12 +74,13 @@ def filter_firstname_lastname(df):
 
 def merge(df1, df2):
     # Extract the specified columns from df1
-    columns_to_add = ['Tm', 'Lg', 'G', 'GS', 'Rtot', 'Pos Summary']
+    columns_to_add = ['G', 'GS', 'Rtot', 'Pos']
     df_to_add = df1[columns_to_add]
 
-    df_merged = df2
-    # Concatenate df_to_add onto df2
-    df_merged = pd.concat([df_merged, df_to_add], axis=1)
+    df_to_add.to_csv("Check.csv", index = False)
+    
+    # Merge df2 and df_to_add using pd.concat
+    df_merged = df2.join(df_to_add, how = 'outer')
 
     return df_merged
 
@@ -103,19 +104,19 @@ if __name__ == "__main__":
     df_hitters = format_hitting(hitting_filename)
     df_position_players = format_fielding(fielding_filename)
 
-    df_hitters.to_csv("hitterstest_pre.csv", index = False)
-    df_position_players.to_csv("fielderstest_pre.csv", index = False)
+    # df_hitters.to_csv("hitterstest_pre.csv", index = False)
+    # df_position_players.to_csv("fielderstest_pre.csv", index = False)
 
     df_hitters, df_position_players = align_names(df_hitters, df_position_players)
 
-    df_hitters.to_csv("hitterstest_post.csv", index = False)
-    df_position_players.to_csv("fielderstest_post.csv", index = False)
+    # df_hitters.to_csv("hitterstest_post.csv", index = False)
+    # df_position_players.to_csv("fielderstest_post.csv", index = False)
 
     df_final = merge(df_position_players, df_hitters)
     df_final.to_csv('finaltest.csv')
 
 
-    # output dataframes to csv's
+    
     
 
 
