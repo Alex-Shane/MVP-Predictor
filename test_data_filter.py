@@ -74,7 +74,7 @@ def filter_firstname_lastname(df):
 
 def merge(df1, df2):
     # Extract the specified columns from df1
-    columns_to_add = ['Tm', 'Lg', 'G', 'GS', 'Rtot', 'Pos Summary']
+    columns_to_add = ['Tm', 'Lg', 'G', 'GS', 'Rtot', 'Pos Summary']
     df_to_add = df1[columns_to_add]
 
     df_merged = df2
@@ -85,10 +85,8 @@ def merge(df1, df2):
 
 
 def align_names(df1, df2):
-    df1_to_delete = []
-    df2_to_delete = []
 
-        # Merge dataframes on 'Last Name' and 'First Name'
+    # Merge dataframes on 'Last Name' and 'First Name'
     merged_df = pd.merge(df1, df2, on=['Last Name', 'First Name'], how='inner')
 
     # Separate the dataframes for players present in both
