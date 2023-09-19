@@ -1,5 +1,4 @@
 import pandas as pd
-import copy
 
 def format_fielding(filename):
     # cut off top 4 lines (whitespace) and remove all pitchers
@@ -72,17 +71,6 @@ def filter_firstname_lastname(df):
 
     return df
 
-def merge(df1, df2):
-    # Extract the specified columns from df1
-    columns_to_add = ['G', 'GS', 'Rtot', 'Pos']
-    df_to_add = df1[columns_to_add]
-
-    df_to_add.to_csv("Check.csv", index = False)
-
-    # Merge df2 and df_to_add using pd.concat
-    df_merged = df2.join(df_to_add, how = 'outer')
-
-    return df_merged
 
 
 def align_names(df1, df2):
@@ -96,9 +84,61 @@ def align_names(df1, df2):
 
     return df1_filtered, df2_filtered
 
-if __name__ == "__main__":
+def add_roba_column(df1, df2):
+    rOBA_vals = list()
+    df1['Name'] = df1['First Name'] + chr(160) + df1['Last Name']
+    
+    for name in df1["Name"]:
+        rOBA_vals.append(df2.loc[df2["Name"] == name, "rOBA"].values[0])
+    
+    df1["rOBA"] = rOBA_vals
+    df1.drop(columns=['Name'], inplace=True)
 
-    fielding_filename = "./training_data/2004/2004_fielding.xlsx"
+    return df1 
+
+def add_WAR_column(df1, df2):
+    WAR_vals = list()
+    df1['Name'] = df1['First Name'] + chr(160) + df1['Last Name']
+    
+    for name in df1["Name"]:
+        WAR_vals.append(df2.loc[df2["Name"] == name, "WAR"].values[0])
+    
+    df1["WAR"] = WAR_vals
+    df1.drop(columns=["Name"], inplace=True)
+    
+    return df1
+
+def clean_all_folders():
+    for x in range(2006, 2007):
+        if x == 2020:
+            continue
+        print(x)
+        fielding_filename = f'./training_data/{x}/fielding.xlsx'
+        hitting_filename = f'./training_data/{x}/basic_hitting.xlsx'
+        df_hitters = format_hitting(hitting_filename)
+        df_position_players = format_fielding(fielding_filename)
+        df_hitters, df_position_players = align_names(df_hitters, df_position_players)
+        
+        defense_columns = ['G', 'GS', 'Rtot', 'Pos']
+        df_def = df_position_players[defense_columns]
+        df_def.to_csv(f'./training_data/full_season_data/{x}_defense.csv', index = False)
+        
+        roba_file = f'./training_data/{x}/rOBA.xlsx'
+        roba_df = pd.read_excel(roba_file, header = 5)
+        df_final = add_roba_column(df_hitters, roba_df)
+        
+        war_file = f'./training_data/{x}/WAR.xlsx'
+        war_df = pd.read_excel(war_file, header = 4)
+        war_df = war_df.dropna(how='any')
+        war_df.loc[:, "Name"] = war_df["Name"].apply(clean_name)
+        df_final = add_WAR_column(df_final, war_df)
+        df_final.to_csv(f'./training_data/full_season_data/{x}_hitting.csv', index = False)
+        print(f'{x} cleaned!')
+
+if __name__ == "__main__":
+    clean_all_folders()
+
+    """fielding_filename = "./training_data/2004/2004_fielding.xlsx"
     hitting_filename = "./training_data/2004/2004_basic_hitting.xlsx"
 
     df_hitters = format_hitting(hitting_filename)
@@ -108,9 +148,23 @@ if __name__ == "__main__":
     # df_position_players.to_csv("fielderstest_pre.csv", index = False)
 
     df_hitters, df_position_players = align_names(df_hitters, df_position_players)
-
+    
     # df_hitters.to_csv("hitterstest_post.csv", index = False)
     # df_position_players.to_csv("fielderstest_post.csv", index = False)
 
-    df_final = merge(df_position_players, df_hitters)
-    df_final.to_csv('finaltest.csv')
+    #df_final = merge(df_position_players, df_hitters)
+    
+    roba_file = "./training_data/2004/2004_rOBA.xlsx"
+    roba_df = pd.read_excel(roba_file, header = 4)
+    df_final = add_roba_column(df_hitters, roba_df)
+    
+    war_file = "./training_data/2004/2004_WAR.xlsx"
+    war_df = pd.read_excel(war_file, header = 4)
+    war_df = war_df.dropna(how='any')
+    war_df.loc[:, "Name"] = war_df["Name"].apply(clean_name)
+    df_final = add_WAR_column(df_final, war_df)
+    df_final.to_csv('finaltest_alex.csv')
+    #df_final = add_roba_column(df_final, roba_df)
+    #df_final.to_csv('finaltest_alex.csv')"""
+    
+
