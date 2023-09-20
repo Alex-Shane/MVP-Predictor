@@ -135,8 +135,148 @@ def clean_all_folders():
         df_final.to_csv(f'./training_data/full_season_data/{x}_hitting.csv', index = False)
         print(f'{x} cleaned!')
 
+    
+def clean_standings():
+    for x in range(2005,2023):
+        df = pd.read_excel('./training_data/{x}/standings.xlsx', header = 4, index_col = False)
+        teams = dict()
+        if x < 2008:
+            teams = {
+            "St. Louis Cardinals": "STL",
+            "Chicago White Sox": "CWS",
+            "New York Yankees": "NYY",
+            "Los Angeles Angels of Anaheim": "LAA",
+            "Boston Red Sox": "BOS",
+            "Cleveland Indians": "CLE",
+            "Atlanta Braves": "ATL",
+            "Houston Astros": "HOU",
+            "Philadelphia Phillies": "PHI",
+            "Oakland Athletics": "OAK",
+            "Florida Marlins": "FLA",
+            "New York Mets": "NYM",
+            "Minnesota Twins": "MIN",
+            "San Diego Padres": "SDP",
+            "Milwaukee Brewers": "MIL",
+            "Washington Nationals": "WSN",
+            "Toronto Blue Jays": "TOR",
+            "Texas Rangers": "TEX",
+            "Chicago Cubs": "CHC",
+            "Arizona Diamondbacks": "ARI",
+            "San Francisco Giants": "SFG",
+            "Baltimore Orioles": "BAL",
+            "Cincinnati Reds": "CIN",
+            "Los Angeles Dodgers": "LAD",
+            "Detroit Tigers": "DET",
+            "Seattle Mariners": "SEA",
+            "Colorado Rockies": "COL",
+            "Tampa Bay Devil Rays": "TBD",
+            "Pittsburgh Pirates": "PIT",
+            "Kansas City Royals": "KCR"
+            }
+        elif x < 2012:
+            teams = {"Los Angeles Angels of Anaheim": "LAA",
+                     "Chicago Cubs": "CHC",
+                     "Tampa Bay Rays": "TBR",
+                     "Boston Red Sox": "BOS",
+                     "Philadelphia Phillies": "PHI",
+                     "Milwaukee Brewers": "MIL",
+                     "New York Mets": "NYM",
+                     "New York Yankees": "NYY",
+                     "Chicago White Sox": "CWS",
+                     "Minnesota Twins": "MIN",
+                     "Houston Astros": "HOU",
+                     "St. Louis Cardinals": "STL",
+                     "Toronto Blue Jays": "TOR",
+                     "Florida Marlins": "FLA",
+                     "Los Angeles Dodgers": "LAD",
+                     "Arizona Diamondbacks": "ARI",
+                     "Cleveland Indians": "CLE",
+                     "Texas Rangers": "TEX",
+                     "Oakland Athletics": "OAK",
+                     "Kansas City Royals": "KCR",
+                     "Colorado Rockies": "COL",
+                     "Detroit Tigers": "DET",
+                     "Cincinnati Reds": "CIN",
+                     "Atlanta Braves": "ATL",
+                     "San Francisco Giants": "SFG",
+                     "Baltimore Orioles": "BAL",
+                     "Pittsburgh Pirates": "PIT",
+                     "San Diego Padres": "SDP",
+                     "Seattle Mariners": "SEA",
+                     "Washington Nationals": "WSN"
+                     }
+        elif x < 2022:
+            teams = {
+                "Washington Nationals": "WSN",
+                "Cincinnati Reds": "CIN",
+                "New York Yankees": "NYY",
+                "San Francisco Giants": "SFG",
+                "Oakland Athletics": "OAK",
+                "Atlanta Braves": "ATL",
+                "Baltimore Orioles": "BAL",
+                "Texas Rangers": "TEX",
+                "Tampa Bay Rays": "TBR",
+                "Los Angeles Angels of Anaheim": "LAA",
+                "Detroit Tigers": "DET",
+                "St. Louis Cardinals": "STL",
+                "Los Angeles Dodgers": "LAD",
+                "Chicago White Sox": "CWS",
+                "Milwaukee Brewers": "MIL",
+                "Arizona Diamondbacks": "ARI",
+                "Philadelphia Phillies": "PHI",
+                "Pittsburgh Pirates": "PIT",
+                "San Diego Padres": "SDP",
+                "Seattle Mariners": "SEA",
+                "New York Mets": "NYM",
+                "Toronto Blue Jays": "TOR",
+                "Kansas City Royals": "KCR",
+                "Miami Marlins": "MIA",
+                "Boston Red Sox": "BOS",
+                "Cleveland Indians": "CLE",
+                "Minnesota Twins": "MIN",
+                "Colorado Rockies": "COL",
+                "Chicago Cubs": "CHC",
+                "Houston Astros": "HOU"
+                }
+        else:
+            teams = {"Los Angeles Dodgers": "LAD",
+                     "Houston Astros": "HOU",
+                     "Atlanta Braves": "ATL",
+                     "New York Mets": "NYM",
+                     "New York Yankees": "NYY",
+                     "St. Louis Cardinals": "STL",
+                     "Cleveland Guardians": "CLE",
+                     "Toronto Blue Jays": "TOR",
+                     "Seattle Mariners": "SEA",
+                     "San Diego Padres": "SDP",
+                     "Philadelphia Phillies": "PHI",
+                     "Milwaukee Brewers": "MIL",
+                     "Tampa Bay Rays": "TBR",
+                     "Baltimore Orioles": "BAL",
+                     "Chicago White Sox": "CWS",
+                     "San Francisco Giants": "SFG",
+                     "Minnesota Twins": "MIN",
+                     "Boston Red Sox": "BOS",
+                     "Chicago Cubs": "CHC",
+                     "Arizona Diamondbacks": "ARI",
+                     "Los Angeles Angels": "LAA",
+                     "Miami Marlins": "MIA",
+                     "Texas Rangers": "TEX",
+                     "Colorado Rockies": "COL",
+                     "Detroit Tigers": "DET",
+                     "Kansas City Royals": "KCR",
+                     "Pittsburgh Pirates": "PIT",
+                     "Cincinnati Reds": "CIN",
+                     "Oakland Athletics": "OAK",
+                     "Washington Nationals": "WSN"}
+        df["Tm"] = list(teams.values())
+        df.to_csv("./training_data/{x}/standings.csv", index = False)
+        print (f'{x} standings cleaned!')
+            
+            
 if __name__ == "__main__":
-    clean_all_folders()
+    clean_standings()
+    #clean_all_folders()
 
     """fielding_filename = "./training_data/2004/2004_fielding.xlsx"
     hitting_filename = "./training_data/2004/2004_basic_hitting.xlsx"
@@ -166,5 +306,7 @@ if __name__ == "__main__":
     df_final.to_csv('finaltest_alex.csv')
     #df_final = add_roba_column(df_final, roba_df)
     #df_final.to_csv('finaltest_alex.csv')"""
+    
+    
     
 
