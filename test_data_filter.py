@@ -138,7 +138,7 @@ def clean_all_folders():
     
 def clean_standings():
     for x in range(2005,2023):
-        df = pd.read_excel('./training_data/{x}/standings.xlsx', header = 4, index_col = False)
+        df = pd.read_excel(f'./training_data/{x}/standings.xlsx', header = 4, index_col = False)
         teams = dict()
         if x < 2008:
             teams = {
@@ -270,7 +270,7 @@ def clean_standings():
                      "Oakland Athletics": "OAK",
                      "Washington Nationals": "WSN"}
         df["Tm"] = list(teams.values())
-        df.to_csv("./training_data/{x}/standings.csv", index = False)
+        df.to_csv(f'./training_data/{x}/standings.csv', index = False)
         print (f'{x} standings cleaned!')
             
             
