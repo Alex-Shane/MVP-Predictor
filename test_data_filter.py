@@ -273,9 +273,49 @@ def clean_standings():
         df.to_csv(f'./training_data/{x}/standings.csv', index = False)
         print (f'{x} standings cleaned!')
             
-            
+def addWinPercentage(composite_file: str, wins_file: str):
+    
+    df = pd.read_csv(composite_file)
+    df_yr_wins = pd.read_csv(wins_file) 
+    df_yr_wins.to_csv('jacksontest.csv', header= 5, index = False)
+
+    cols = ['Tm', 'W-L%']
+    temp = df_yr_wins[cols]
+    temp = temp.iloc[:30]
+    temp.to_csv('jacksontest.csv', index = False)
+
+    wins_dict = dict(zip(temp['Tm'], temp['W-L%']))
+    wins_dict['TOT'] = 'NA'
+
+    winPercentages = []
+
+    ctr = 0
+    df['Tm'].to_csv('jacksontest.csv')
+
+    for team in df['Tm']:
+        if team in wins_dict.keys():
+            winPercentages.append(wins_dict[team])
+        else: 
+            winPercentages.append('NA')
+
+        ctr+=1
+
+
+    df['WinPercentage'] = winPercentages
+
+    return df
+
 if __name__ == "__main__":
-    clean_standings()
+
+    composite = "./training_data/full_season_data/2022_composite.csv"
+    wins = "./training_data/2022/standings.csv"
+
+    temp_comp = addWinPercentage(composite, wins)
+    temp_comp.to_csv('jacksontest.csv')
+
+    temp_comp.to_csv("./training_data/full_season_data/2022_composite.csv", index= False)
+
+    #clean_standings()
     #clean_all_folders()
 
     """fielding_filename = "./training_data/2004/2004_fielding.xlsx"
