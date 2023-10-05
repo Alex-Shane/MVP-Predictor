@@ -277,12 +277,10 @@ def addWinPercentage(composite_file: str, wins_file: str):
     
     df = pd.read_csv(composite_file)
     df_yr_wins = pd.read_csv(wins_file) 
-    df_yr_wins.to_csv('jacksontest.csv', header= 5, index = False)
 
     cols = ['Tm', 'W-L%']
     temp = df_yr_wins[cols]
     temp = temp.iloc[:30]
-    temp.to_csv('jacksontest.csv', index = False)
 
     wins_dict = dict(zip(temp['Tm'], temp['W-L%']))
     wins_dict['TOT'] = 'NA'
@@ -290,7 +288,6 @@ def addWinPercentage(composite_file: str, wins_file: str):
     winPercentages = []
 
     ctr = 0
-    df['Tm'].to_csv('jacksontest.csv')
 
     for team in df['Tm']:
         if team in wins_dict.keys():
@@ -307,13 +304,13 @@ def addWinPercentage(composite_file: str, wins_file: str):
 
 if __name__ == "__main__":
 
-    composite = "./training_data/full_season_data/2022_composite.csv"
-    wins = "./training_data/2022/standings.csv"
+    composite = "./testing_data/2023_composite.csv"
+    wins = "./testing_data/2023_standings.csv"
 
     temp_comp = addWinPercentage(composite, wins)
-    temp_comp.to_csv('jacksontest.csv')
+    #temp_comp.to_csv('jacksontest.csv')
 
-    temp_comp.to_csv("./training_data/full_season_data/2022_composite.csv", index= False)
+    temp_comp.to_csv("./testing_data/2023_composite_check.csv", index= False)
 
     #clean_standings()
     #clean_all_folders()
@@ -347,6 +344,25 @@ if __name__ == "__main__":
     #df_final = add_roba_column(df_final, roba_df)
     #df_final.to_csv('finaltest_alex.csv')"""
     
+    fielding_filename = './testing_data/2023_fielding.xlsx'
+    hitting_filename = './testing_data/2023_basic_hitting.xlsx'
+    df_hitters = format_hitting(hitting_filename)
+    df_position_players = format_fielding(fielding_filename)
+    df_hitters, df_position_players = align_names(df_hitters, df_position_players)
     
+    defense_columns = ['G', 'GS', 'Rtot', 'Pos']
+    df_def = df_position_players[defense_columns]
+    df_def.to_csv('./testing_data/2023_defense.csv', index = False)
+    
+    roba_file = './testing_data/2023_rOBA.xlsx'
+    roba_df = pd.read_excel(roba_file, header = 5)
+    df_final = add_roba_column(df_hitters, roba_df)
+    
+    war_file = './testing_data/2023_WAR.xlsx'
+    war_df = pd.read_excel(war_file, header = 4)
+    war_df = war_df.dropna(how='any')
+    war_df.loc[:, "Name"] = war_df["Name"].apply(clean_name)
+    df_final = add_WAR_column(df_final, war_df)
+    df_final.to_csv('./testing_data/2023_hitting.csv', index = False)
     
 
