@@ -310,7 +310,7 @@ if __name__ == "__main__":
     temp_comp = addWinPercentage(composite, wins)
     temp_comp.to_csv('jacksontest.csv', index = False)
 
-    temp_comp.to_csv("./testing_data/2023_composite_check.csv", index= False)
+    temp_comp.to_csv("./testing_data/2023_composite.csv", index= False)
 
     #clean_standings()
     #clean_all_folders()
