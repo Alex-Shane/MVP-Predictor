@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
-from xgboost import XGBClassifier
+from xgboost import XGBRegressor, XGBClassifier
 from sklearn.metrics import accuracy_score
 import joblib 
 
@@ -9,6 +9,7 @@ import joblib
 data = pd.read_csv('./training_data/full_season_data/tester.csv')
 
 al_data = data[data['Lg'] == 'AL']
+print(al_data['MVP'].dtype)
 nl_data = data[data['Lg'] == 'NL']
 
 # Define the categorical variables to be one-hot encoded
