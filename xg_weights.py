@@ -31,31 +31,45 @@ X_nl = nl_data.drop(columns=columns_to_drop)
 y_nl = nl_data['MVP']
 y_nl.fillna(0, inplace=True)
 
+X = data.drop(columns=columns_to_drop)
+Y = data['MVP']
+Y.fillna(0,inplace=True)
+
 # Create and train XGBoost model
 al_model = XGBClassifier()
 al_model.fit(X_al, y_al)
 nl_model = XGBClassifier()
 nl_model.fit(X_nl, y_nl)
 
+mvp_model = XGBClassifier()
+mvp_model.fit(X,Y)
+
+
 # Get feature importances
 al_feature_importances = al_model.feature_importances_
 nl_feature_importances = nl_model.feature_importances_ 
+mvp_feature_importances = mvp_model.feature_importances_
 
 # Create a DataFrame to store feature importance scores and their corresponding column names
 al_feature_importance_df = pd.DataFrame({'Feature': X_al.columns, 'Importance': al_feature_importances})
 nl_feature_importance_df = pd.DataFrame({'Feature': X_nl.columns, 'Importance': nl_feature_importances})
+mvp_feature_importance_df = pd.DataFrame({'Feature': X.columns, 'Importance': mvp_feature_importances})
 
 # Sort features by importance in descending order
 al_sorted_features = al_feature_importance_df.sort_values(by='Importance', ascending=False)
 nl_sorted_features = nl_feature_importance_df.sort_values(by='Importance', ascending=False)
+mvp_sorted_features = mvp_feature_importance_df.sort_values(by='Importance', ascending=False)
 
 # Print the top features
 print("AL results: ")
 print(al_sorted_features.head())
 print ("NL results:")
 print(nl_sorted_features.head())
+print("Total Results: ")
+print(mvp_sorted_features)
 
 joblib.dump(al_model, 'al_xgb_model.pkl')
 joblib.dump(nl_model, 'nl_xgb_model.pkl')
+joblib.dump(mvp_model, 'mvp_model.pkl')
     
     
