@@ -10,16 +10,38 @@ import pandas as pd
 import warnings
 
 
-# Define the weights for each statistic (customize these based on your preferences)
-BAW = 2.38888889    # Weight for Batting Average
-HRW = 2.346978557   # Weight for Home Runs
-RBIW = 2.211202938  # Weight for RBIs
-OPSW = 4.864646464  # Weight for OPS
-WARW = 6.86039886   # Weight for WAR
-SBW = 0.5597396559  # Weight for Stolen Bases
-ROBAW = 4.864646464  # Weight for rOBA
-DEFW = 0.1955815464  # Weight for rTot(defense)
-TEAMW = 4.053872054  # Weight for team ranking (by win%)
+# Define the NL weights for each statistic (customize these based on your preferences)
+NL_BAW = 2.38888889    # Weight for Batting Average
+NL_HRW = 2.346978557   # Weight for Home Runs
+NL_RBIW = 2.211202938  # Weight for RBIs
+NL_OPSW = 4.864646464  # Weight for OPS
+NL_WARW = 6.86039886   # Weight for WAR
+NL_SBW = 0.5597396559  # Weight for Stolen Bases
+NL_ROBAW = 4.864646464  # Weight for rOBA
+NL_DEFW = 0.1955815464  # Weight for rTot(defense)
+NL_TEAMW = 4.053872054  # Weight for team ranking (by win%)
+
+# Define the AL weights for each statistic (customize these based on your preferences)
+AL_BAW = 2.77       # Weight for Batting Average
+AL_HRW = 2.248      # Weight for HRs
+AL_RBIW = 2.206     # Weight for RBIs
+AL_OPSW = 6.499     # Weight for OPS
+AL_WARW = 9.929     # Weight for WAR
+AL_SBW = 0.863      # Weight for SBs
+AL_ROBAW = 6.744    # Weight for rOBA
+AL_DEFW = 0.168     # Weight for defense
+AL_TEAMW = 4.703    # Weight for team performance 
+
+#Define standardized weights (average of both leagues) for each stat
+BAW = 2.579444444444444    # Weight for Batting Average
+HRW = 2.29748928   # Weight for Home Runs
+RBIW = 2.20860146  # Weight for RBIs
+OPSW = 5.6818232  # Weight for OPS
+WARW = 8.39469943   # Weight for WAR
+SBW = 0.71136828  # Weight for Stolen Bases
+ROBAW = 5.8043232  # Weight for rOBA
+DEFW = 0.18179077  # Weight for rTot(defense)
+TEAMW = 4.37843602 # Weight for team ranking (by win%)
 
 
 def inSampleTesting():
@@ -78,10 +100,12 @@ def inSampleTesting():
 
 warnings.filterwarnings("ignore")
 inSampleTesting()
-# AL: got Morneau wrong (said Berkman), got Pedroia wrong (said Rodriguez), got Donaldson wrong (said Trout), got Altuve wrong (said Judge), got Betts wrong (said Trout),
-    # accuracy = 11/16 = 69%
+# AL: got Morneau wrong (said Berkman), got Pedroia wrong (said Rodriguez), got Cabera wrong (said Trout), got Donaldson wrong (said Trout), got Altuve wrong (said Judge), got Betts wrong (said Trout),
+    # accuracy = 10/16 = 63% with seperate weights
+    # accuracy = 10/16 = 63% with standardized weights
 # NL: got Howard wrong (said Pujols), got Rollins wrong (said Pujols), got Votto wrong (said Pujols), got Posey wrong (said Braun), got McCutchen wrong (said Goldschmidt), got Bryant wrong (said freeman), got Stanton wrong (said Votto), got Bellinger wrong (said Rendon), got Harper wrong (said Soto)
-    # 8/17 = 47% 
+    # accuracy = 8/17 = 47% with seperate weights
+    # accuracy = 9/16 = 56% with standardized weights (got McCutchen right)
     
     
 # Load the CSV file containing player statistics
