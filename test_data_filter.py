@@ -364,5 +364,12 @@ if __name__ == "__main__":
     # war_df.loc[:, "Name"] = war_df["Name"].apply(clean_name)
     # df_final = add_WAR_column(df_final, war_df)
     # df_final.to_csv('./testing_data/2023_hitting.csv', index = False)
+    for x in range(2004,2013):
+        data = pd.read_csv(f'./training_data/full_season_data/{x}_composite.csv')
+        for index, row in data.iterrows():
+            if row['Tm'] == 'HOU':
+                data.at[index, 'Lg'] = 'NL'
+        data.to_csv('./training_data/HOU_adj.csv', index=False)
+    
     
 
