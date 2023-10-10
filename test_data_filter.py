@@ -369,7 +369,8 @@ if __name__ == "__main__":
         for index, row in data.iterrows():
             if row['Tm'] == 'HOU':
                 data.at[index, 'Lg'] = 'NL'
-        data.to_csv('./training_data/HOU_adj.csv', index=False)
+        data.to_csv(f'./training_data/full_season_data/{x}_composite.csv', index=False)
+        print(f'{x} cleaned!')
     
     
 

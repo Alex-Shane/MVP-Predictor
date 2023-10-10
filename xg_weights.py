@@ -68,8 +68,8 @@ print(nl_sorted_features.head())
 print("Total Results: ")
 print(mvp_sorted_features)
 
-joblib.dump(al_model, 'al_xgb_model.pkl')
-joblib.dump(nl_model, 'nl_xgb_model.pkl')
-joblib.dump(mvp_model, 'mvp_model.pkl')
+joblib.dump(al_model, 'al_xgb2_model.pkl')
+joblib.dump(nl_model, 'nl_xgb2_model.pkl')
+joblib.dump(mvp_model, 'mvp_model2.pkl')
     
     

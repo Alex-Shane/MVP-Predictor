@@ -45,7 +45,7 @@ def inSampleTesting(model):
 
 
 # Step 1: Load the AL model
-model = joblib.load('mvp_model.pkl')
+model = joblib.load('mvp_model2.pkl')
 
 # Step 2: Load the testing data (replace '2023_composite.csv' with your testing data file)
 data = pd.read_csv('./testing_data/2023_composite.csv')

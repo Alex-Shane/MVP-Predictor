@@ -99,13 +99,13 @@ def inSampleTesting():
         print(f'Predicted {x} NL MVP: {nl_mvp}')
 
 warnings.filterwarnings("ignore")
-#inSampleTesting()
+inSampleTesting()
 # AL: got Morneau wrong (said Berkman), got Pedroia wrong (said Rodriguez), got Cabera wrong (said Trout), got Donaldson wrong (said Trout), got Altuve wrong (said Judge), got Betts wrong (said Trout),
     # accuracy = 10/16 = 63% with seperate weights
-    # accuracy = 10/16 = 63% with standardized weights
+    # accuracy = 9/16 = 56% with standardized weights
 # NL: got Howard wrong (said Pujols), got Rollins wrong (said Pujols), got Votto wrong (said Pujols), got Posey wrong (said Braun), got McCutchen wrong (said Goldschmidt), got Bryant wrong (said freeman), got Stanton wrong (said Votto), got Bellinger wrong (said Rendon), got Harper wrong (said Soto)
     # accuracy = 8/17 = 47% with seperate weights
-    # accuracy = 9/16 = 56% with standardized weights (got McCutchen right)
+    # accuracy = 8/16 = 50% with standardized weights (got McCutchen right)
     
     
 # Load the CSV file containing player statistics
