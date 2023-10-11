@@ -89,6 +89,24 @@ def inSampleTesting():
         # Sort the players by MVP Predictor score in ascending order
         al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
         nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)
+        
+        # Create a new column to count how many of the specified stats each player ranks first in
+        al_data['Num_Top_Ranks'] = al_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
+        nl_data['Num_Top_Ranks'] = nl_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
+
+        # Subtract points based on the number of top ranks
+        al_data['MVP_Predictor'] -= 30 * (al_data['Num_Top_Ranks'] == 1)
+        al_data['MVP_Predictor'] -= 60 * (al_data['Num_Top_Ranks'] == 2)
+        al_data['MVP_Predictor'] -= 90 * (al_data['Num_Top_Ranks'] == 3)
+
+        # Subtract points based on the number of top ranks
+        nl_data['MVP_Predictor'] -= 30 * (nl_data['Num_Top_Ranks'] == 1)
+        nl_data['MVP_Predictor'] -= 60 * (nl_data['Num_Top_Ranks'] == 2)
+        nl_data['MVP_Predictor'] -= 90 * (nl_data['Num_Top_Ranks'] == 3)
+
+        # Sort the players by MVP Predictor score in ascending order
+        al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
+        nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)
 
         # get the predicted MVP(s)
         al_mvp = al_data[['Last Name', 'MVP_Predictor']].head(1)
@@ -101,15 +119,14 @@ def inSampleTesting():
 warnings.filterwarnings("ignore")
 inSampleTesting()
 # AL: got Morneau wrong (said Berkman), got Pedroia wrong (said Rodriguez), got Cabera wrong (said Trout), got Donaldson wrong (said Trout), got Altuve wrong (said Judge), got Betts wrong (said Trout),
-    # accuracy = 10/16 = 63% with seperate weights
-    # accuracy = 9/16 = 56% with standardized weights
+    # accuracy = 12/16 = 75%% with standardized weights
 # NL: got Howard wrong (said Pujols), got Rollins wrong (said Pujols), got Votto wrong (said Pujols), got Posey wrong (said Braun), got McCutchen wrong (said Goldschmidt), got Bryant wrong (said freeman), got Stanton wrong (said Votto), got Bellinger wrong (said Rendon), got Harper wrong (said Soto)
-    # accuracy = 8/17 = 47% with seperate weights
-    # accuracy = 8/16 = 50% with standardized weights (got McCutchen right)
+    # accuracy = 6/16 = 38% with standardized weights (got McCutchen right)
+# total accuracy: 19/33
     
     
 # Load the CSV file containing player statistics
-data = pd.read_csv('./training_data/full_season_data/2006_composite.csv')
+data = pd.read_csv('./training_data/full_season_data/2021_composite.csv')
 al_data = data[data['Lg'] == 'AL']
 nl_data = data[data['Lg'] == 'NL']
 
@@ -150,6 +167,23 @@ nl_data['MVP_Predictor'] = (
 al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
 nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)
 
+# Create a new column to count how many of the specified stats each player ranks first in
+al_data['Num_Top_Ranks'] = al_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
+nl_data['Num_Top_Ranks'] = nl_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
+
+# Subtract points based on the number of top ranks
+al_data['MVP_Predictor'] -= 30 * (al_data['Num_Top_Ranks'] == 1)
+al_data['MVP_Predictor'] -= 60 * (al_data['Num_Top_Ranks'] == 2)
+al_data['MVP_Predictor'] -= 90 * (al_data['Num_Top_Ranks'] == 3)
+
+# Subtract points based on the number of top ranks
+nl_data['MVP_Predictor'] -= 30 * (nl_data['Num_Top_Ranks'] == 1)
+nl_data['MVP_Predictor'] -= 60 * (nl_data['Num_Top_Ranks'] == 2)
+nl_data['MVP_Predictor'] -= 90 * (nl_data['Num_Top_Ranks'] == 3)
+
+# Sort the players by MVP Predictor score in ascending order
+al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
+nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)
 
 # Print the predicted MVP(s)
 print(al_data[['Last Name', 'MVP_Predictor']].head(5))
