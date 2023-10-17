@@ -90,7 +90,7 @@ def inSampleTesting():
         al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
         nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)
         
-        # Create a new column to count how many of the specified stats each player ranks first in
+        """# Create a new column to count how many of the specified stats each player ranks first in
         al_data['Num_Top_Ranks'] = al_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
         nl_data['Num_Top_Ranks'] = nl_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
 
@@ -106,7 +106,7 @@ def inSampleTesting():
 
         # Sort the players by MVP Predictor score in ascending order
         al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
-        nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)
+        nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)"""
 
         # get the predicted MVP(s)
         al_mvp = al_data[['Last Name', 'MVP_Predictor']].head(1)
@@ -126,7 +126,7 @@ inSampleTesting()
     
     
 # Load the CSV file containing player statistics
-data = pd.read_csv('./training_data/full_season_data/2021_composite.csv')
+data = pd.read_csv('./testing_data/2023_composite.csv')
 al_data = data[data['Lg'] == 'AL']
 nl_data = data[data['Lg'] == 'NL']
 
@@ -168,7 +168,7 @@ al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
 nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)
 
 # Create a new column to count how many of the specified stats each player ranks first in
-al_data['Num_Top_Ranks'] = al_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
+"""al_data['Num_Top_Ranks'] = al_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
 nl_data['Num_Top_Ranks'] = nl_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
 
 # Subtract points based on the number of top ranks
@@ -183,7 +183,7 @@ nl_data['MVP_Predictor'] -= 90 * (nl_data['Num_Top_Ranks'] == 3)
 
 # Sort the players by MVP Predictor score in ascending order
 al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
-nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)
+nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)"""
 
 # Print the predicted MVP(s)
 print(al_data[['Last Name', 'MVP_Predictor']].head(5))

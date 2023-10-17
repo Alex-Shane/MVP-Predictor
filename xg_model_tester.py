@@ -83,7 +83,7 @@ print(top_5_mvp_candidates_al)
 print("Top 5 MVP Candidates (NL):")
 print(top_5_mvp_candidates_nl)
 
-inSampleTesting(model)
+#inSampleTesting(model)
 
 # in sample testing (AL): 16/16
 # in sample testing (NL): 17/17

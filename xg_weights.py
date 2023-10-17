@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from xgboost import XGBRegressor, XGBClassifier
-from sklearn.metrics import accuracy_score
+from sklearn.metrics import precision_recall_curve, auc
 import joblib 
 
 # Load your dataframe (replace 'data.csv' with your actual data file)
@@ -44,6 +44,22 @@ nl_model.fit(X_nl, y_nl)
 mvp_model = XGBClassifier()
 mvp_model.fit(X,Y)
 
+"""# Split the data into training and testing sets
+X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+
+# Create and train the XGBoost model
+mvp_model = XGBClassifier()
+mvp_model.fit(X_train, Y_train)
+
+# Predict probabilities for the test set
+Y_pred_prob = mvp_model.predict_proba(X_test)[:, 1]  # Use the probability of being class 1 (MVP)
+
+# Calculate Precision-Recall curve and PR AUC score
+precision, recall, _ = precision_recall_curve(Y_test, Y_pred_prob)
+pr_auc = auc(recall, precision)
+
+print(f"PR AUC Score: {pr_auc}")"""
+
 
 # Get feature importances
 al_feature_importances = al_model.feature_importances_
@@ -68,8 +84,8 @@ print(nl_sorted_features.head())
 print("Total Results: ")
 print(mvp_sorted_features)
 
-joblib.dump(al_model, 'al_xgb_model.pkl')
-joblib.dump(nl_model, 'nl_xgb_model.pkl')
+#joblib.dump(al_model, 'al_xgb_model.pkl')
+#joblib.dump(nl_model, 'nl_xgb_model.pkl')
 joblib.dump(mvp_model, 'mvp_model.pkl')
     
     
