@@ -309,7 +309,7 @@ def clean_standings():
 def addWinPercentage(composite_file: str, wins_file: str):
     
     df = pd.read_csv(composite_file)
-    df_yr_wins = pd.read_csv(wins_file, header=1, index_col=False) 
+    df_yr_wins = pd.read_csv(wins_file, index_col=False) 
 
     cols = ['Tm', 'W-L%']
     temp = df_yr_wins[cols]
@@ -346,15 +346,15 @@ def clean_HOU():
 
 if __name__ == "__main__":
 
-    composite = "./testing_data/2000_composite.csv"
-    wins = "./testing_data/2000_standings.csv"
+    composite = "./testing_data/2003_composite.csv"
+    wins = "./testing_data/2003_standings.csv"
 
     temp_comp = addWinPercentage(composite, wins)
-    temp_comp.to_csv('jacksontest.csv', index = False)
+    #temp_comp.to_csv('jacksontest.csv', index = False)
 
-    temp_comp.to_csv("./testing_data/2023_composite.csv", index= False)
+    temp_comp.to_csv("./testing_data/2003_composite.csv", index= False)
     
-    clean_HOU()
+    # clean_HOU()
 
     #clean_standings()
     #clean_all_folders()
