@@ -109,38 +109,71 @@ def add_WAR_column(df1, df2):
     return df1
 
 def clean_all_folders():
-    for x in range(2006, 2007):
+    for x in range(2000, 2004):
         if x == 2020:
             continue
         print(x)
-        fielding_filename = f'./training_data/{x}/fielding.xlsx'
-        hitting_filename = f'./training_data/{x}/basic_hitting.xlsx'
+        fielding_filename = f'./testing_data/{x}_fielding.xlsx'
+        hitting_filename = f'./testing_data/{x}_hitting.xlsx'
         df_hitters = format_hitting(hitting_filename)
         df_position_players = format_fielding(fielding_filename)
         df_hitters, df_position_players = align_names(df_hitters, df_position_players)
         
         defense_columns = ['G', 'GS', 'Rtot', 'Pos']
         df_def = df_position_players[defense_columns]
-        df_def.to_csv(f'./training_data/full_season_data/{x}_defense.csv', index = False)
+        df_def.to_csv(f'./testing_data/{x}_defense.csv', index = False)
         
-        roba_file = f'./training_data/{x}/rOBA.xlsx'
+        roba_file = f'./testing_data/{x}_rOBA.xlsx'
         roba_df = pd.read_excel(roba_file, header = 5)
         df_final = add_roba_column(df_hitters, roba_df)
         
-        war_file = f'./training_data/{x}/WAR.xlsx'
+        war_file = f'./testing_data/{x}_WAR.xlsx'
         war_df = pd.read_excel(war_file, header = 4)
         war_df = war_df.dropna(how='any')
         war_df.loc[:, "Name"] = war_df["Name"].apply(clean_name)
         df_final = add_WAR_column(df_final, war_df)
-        df_final.to_csv(f'./training_data/full_season_data/{x}_hitting.csv', index = False)
+        df_final.to_csv(f'./testing_data/{x}_hitting.csv', index = False)
         print(f'{x} cleaned!')
 
     
 def clean_standings():
-    for x in range(2005,2023):
-        df = pd.read_excel(f'./training_data/{x}/standings.xlsx', header = 4, index_col = False)
+    for x in range(2000,2004):
+        df = pd.read_excel(f'./testing_data/{x}_standings.xlsx', header = 4, index_col = False)
         teams = dict()
-        if x < 2008:
+        if x < 2004:
+            teams = {
+            "St. Louis Cardinals": "STL",
+            "Chicago White Sox": "CWS",
+            "New York Yankees": "NYY",
+            "Anaheim Angels": "ANA",
+            "Boston Red Sox": "BOS",
+            "Cleveland Indians": "CLE",
+            "Atlanta Braves": "ATL",
+            "Houston Astros": "HOU",
+            "Philadelphia Phillies": "PHI",
+            "Oakland Athletics": "OAK",
+            "Florida Marlins": "FLA",
+            "New York Mets": "NYM",
+            "Minnesota Twins": "MIN",
+            "San Diego Padres": "SDP",
+            "Milwaukee Brewers": "MIL",
+            "Montreal Expos": "MON",
+            "Toronto Blue Jays": "TOR",
+            "Texas Rangers": "TEX",
+            "Chicago Cubs": "CHC",
+            "Arizona Diamondbacks": "ARI",
+            "San Francisco Giants": "SFG",
+            "Baltimore Orioles": "BAL",
+            "Cincinnati Reds": "CIN",
+            "Los Angeles Dodgers": "LAD",
+            "Detroit Tigers": "DET",
+            "Seattle Mariners": "SEA",
+            "Colorado Rockies": "COL",
+            "Tampa Bay Devil Rays": "TBD",
+            "Pittsburgh Pirates": "PIT",
+            "Kansas City Royals": "KCR"
+            }
+        elif x < 2008:
             teams = {
             "St. Louis Cardinals": "STL",
             "Chicago White Sox": "CWS",
@@ -270,7 +303,7 @@ def clean_standings():
                      "Oakland Athletics": "OAK",
                      "Washington Nationals": "WSN"}
         df["Tm"] = list(teams.values())
-        df.to_csv(f'./training_data/{x}/standings.csv', index = False)
+        df.to_csv(f'./testing_data/{x}_standings.csv', index = False)
         print (f'{x} standings cleaned!')
             
 def addWinPercentage(composite_file: str, wins_file: str):
@@ -302,15 +335,26 @@ def addWinPercentage(composite_file: str, wins_file: str):
 
     return df
 
+def clean_HOU():
+    for x in range(2000,2004):
+        data = pd.read_csv(f'./testing_data/{x}_composite.csv')
+        for index, row in data.iterrows():
+            if row['Tm'] == 'HOU':
+                data.at[index, 'Lg'] = 'NL'
+        data.to_csv(f'./testing_data/{x}_composite.csv', index=False)
+        print(f'{x} cleaned!')
+
 if __name__ == "__main__":
 
-    composite = "./testing_data/2023_composite.csv"
-    wins = "./testing_data/2023_standings.csv"
+    composite = "./testing_data/2000_composite.csv"
+    wins = "./testing_data/2000_standings.csv"
 
     temp_comp = addWinPercentage(composite, wins)
     temp_comp.to_csv('jacksontest.csv', index = False)
 
     temp_comp.to_csv("./testing_data/2023_composite.csv", index= False)
+    
+    clean_HOU()
 
     #clean_standings()
     #clean_all_folders()
@@ -364,13 +408,7 @@ if __name__ == "__main__":
     # war_df.loc[:, "Name"] = war_df["Name"].apply(clean_name)
     # df_final = add_WAR_column(df_final, war_df)
     # df_final.to_csv('./testing_data/2023_hitting.csv', index = False)
-    for x in range(2004,2013):
-        data = pd.read_csv(f'./training_data/full_season_data/{x}_composite.csv')
-        for index, row in data.iterrows():
-            if row['Tm'] == 'HOU':
-                data.at[index, 'Lg'] = 'NL'
-        data.to_csv(f'./training_data/full_season_data/{x}_composite.csv', index=False)
-        print(f'{x} cleaned!')
+    
     
     
 
