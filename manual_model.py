@@ -117,7 +117,7 @@ def inSampleTesting():
         print(f'Predicted {x} NL MVP: {nl_mvp}')
 
 warnings.filterwarnings("ignore")
-inSampleTesting()
+#inSampleTesting()
 # AL: got Morneau wrong (said Berkman), got Pedroia wrong (said Rodriguez), got Cabera wrong (said Trout), got Donaldson wrong (said Trout), got Altuve wrong (said Judge), got Betts wrong (said Trout),
     # accuracy = 12/16 = 75%% with standardized weights
 # NL: got Howard wrong (said Pujols), got Rollins wrong (said Pujols), got Votto wrong (said Pujols), got Posey wrong (said Braun), got McCutchen wrong (said Goldschmidt), got Bryant wrong (said freeman), got Stanton wrong (said Votto), got Bellinger wrong (said Rendon), got Harper wrong (said Soto)
@@ -126,7 +126,7 @@ inSampleTesting()
     
     
 # Load the CSV file containing player statistics
-data = pd.read_csv('./testing_data/2023_composite.csv')
+data = pd.read_csv('./testing_data/2003_composite.csv')
 al_data = data[data['Lg'] == 'AL']
 nl_data = data[data['Lg'] == 'NL']
 
