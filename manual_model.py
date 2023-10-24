@@ -33,15 +33,15 @@ AL_DEFW = 0.168     # Weight for defense
 AL_TEAMW = 4.703    # Weight for team performance 
 
 #Define standardized weights (average of both leagues) for each stat
-BAW = 2.579444444444444    # Weight for Batting Average
-HRW = 2.29748928   # Weight for Home Runs
+BAW = 3.999444444  # Weight for Batting Average
+HRW = 3.39748928  # Weight for Home Runs
 RBIW = 2.20860146  # Weight for RBIs
-OPSW = 5.6818232  # Weight for OPS
-WARW = 8.39469943   # Weight for WAR
-SBW = 0.71136828  # Weight for Stolen Bases
-ROBAW = 5.8043232  # Weight for rOBA
-DEFW = 0.18179077  # Weight for rTot(defense)
-TEAMW = 4.37843602 # Weight for team ranking (by win%)
+OPSW = 5.6818232  # Weight for Stolen Bases
+WARW = 10.1
+SBW = 0.71136828 
+ROBAW = 5.8043232
+DEFW = 0.18179077
+TEAMW = 6.37843602
 
 
 def inSampleTesting():
@@ -85,6 +85,11 @@ def inSampleTesting():
             DEFW * nl_data['Rtot_Rank'] +
             TEAMW * nl_data['WinPercentage_Rank']
         )
+        
+        al_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
+        al_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 30
+        nl_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
+        nl_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 30
 
         # Sort the players by MVP Predictor score in ascending order
         al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
@@ -109,15 +114,15 @@ def inSampleTesting():
         nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)"""
 
         # get the predicted MVP(s)
-        al_mvp = al_data[['Last Name', 'MVP_Predictor']].head(1)
-        nl_mvp = nl_data[['Last Name', 'MVP_Predictor']].head(1)
+        al_mvp = al_data[['Last Name', 'MVP_Predictor']].head(5)
+        nl_mvp = nl_data[['Last Name', 'MVP_Predictor']].head(5)
 
         # print the predicted MVPs
-        print(f'Predicted {x} AL MVP: {al_mvp}')
+        #print(f'Predicted {x} AL MVP: {al_mvp}')
         print(f'Predicted {x} NL MVP: {nl_mvp}')
 
 warnings.filterwarnings("ignore")
-#inSampleTesting()
+inSampleTesting()
 # AL: got Morneau wrong (said Berkman), got Pedroia wrong (said Rodriguez), got Cabera wrong (said Trout), got Donaldson wrong (said Trout), got Altuve wrong (said Judge), got Betts wrong (said Trout),
     # accuracy = 12/16 = 75%% with standardized weights
 # NL: got Howard wrong (said Pujols), got Rollins wrong (said Pujols), got Votto wrong (said Pujols), got Posey wrong (said Braun), got McCutchen wrong (said Goldschmidt), got Bryant wrong (said freeman), got Stanton wrong (said Votto), got Bellinger wrong (said Rendon), got Harper wrong (said Soto)
@@ -126,7 +131,7 @@ warnings.filterwarnings("ignore")
     
     
 # Load the CSV file containing player statistics
-data = pd.read_csv('./testing_data/2003_composite.csv')
+data = pd.read_csv('./testing_data/2023_composite.csv')
 al_data = data[data['Lg'] == 'AL']
 nl_data = data[data['Lg'] == 'NL']
 
@@ -162,6 +167,11 @@ nl_data['MVP_Predictor'] = (
     DEFW * nl_data['Rtot_Rank'] +
     TEAMW * nl_data['WinPercentage_Rank']
 )
+
+"""al_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
+al_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 20
+nl_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
+nl_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 20"""
 
 # Sort the players by MVP Predictor score in ascending order
 al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
