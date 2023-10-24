@@ -86,10 +86,19 @@ def inSampleTesting():
             TEAMW * nl_data['WinPercentage_Rank']
         )
         
-        al_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
+        """al_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
         al_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 30
         nl_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
-        nl_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 30
+        nl_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 30"""
+        
+        # Identify the AL and NL triple crown winners and adjust their MVP Predictor score
+        al_triple_crown_winner = al_data[(al_data['BA_Rank'] == 1) & (al_data['HR_Rank'] == 1) & (al_data['RBI_Rank'] == 1)]
+        if not al_triple_crown_winner.empty:
+            al_data.loc[al_triple_crown_winner.index[0], 'MVP_Predictor'] -= 100
+    
+        nl_triple_crown_winner = nl_data[(nl_data['BA_Rank'] == 1) & (nl_data['HR_Rank'] == 1) & (nl_data['RBI_Rank'] == 1)]
+        if not nl_triple_crown_winner.empty:
+            nl_data.loc[nl_triple_crown_winner.index[0], 'MVP_Predictor'] -= 100
 
         # Sort the players by MVP Predictor score in ascending order
         al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
@@ -172,6 +181,15 @@ nl_data['MVP_Predictor'] = (
 al_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 20
 nl_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
 nl_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 20"""
+
+# Identify the AL and NL triple crown winners and adjust their MVP Predictor score
+al_triple_crown_winner = al_data[(al_data['BA_Rank'] == 1) & (al_data['HR_Rank'] == 1) & (al_data['RBI_Rank'] == 1)]
+if not al_triple_crown_winner.empty:
+    al_data.loc[al_triple_crown_winner.index[0], 'MVP_Predictor'] -= 100
+
+nl_triple_crown_winner = nl_data[(nl_data['BA_Rank'] == 1) & (nl_data['HR_Rank'] == 1) & (nl_data['RBI_Rank'] == 1)]
+if not nl_triple_crown_winner.empty:
+    nl_data.loc[nl_triple_crown_winner.index[0], 'MVP_Predictor'] -= 100
 
 # Sort the players by MVP Predictor score in ascending order
 al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)

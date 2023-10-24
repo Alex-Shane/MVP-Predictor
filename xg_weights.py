@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from xgboost import XGBRegressor, XGBClassifier
-from sklearn.metrics import precision_recall_curve, auc
+from sklearn.metrics import precision_recall_curve, auc, f1_score
 import joblib 
 
 # Load your dataframe (replace 'data.csv' with your actual data file)
@@ -41,14 +41,14 @@ al_model.fit(X_al, y_al)
 nl_model = XGBClassifier()
 nl_model.fit(X_nl, y_nl)
 
-mvp_model = XGBClassifier()
+mvp_model = XGBClassifier(max_depth=6)
 mvp_model.fit(X,Y)
 
-"""# Split the data into training and testing sets
-X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
+# Split the data into training and testing sets
+"""X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2, random_state=42)
 
 # Create and train the XGBoost model
-mvp_model = XGBClassifier()
+mvp_model = XGBClassifier(max_depth=6)
 mvp_model.fit(X_train, Y_train)
 
 # Predict probabilities for the test set
@@ -58,7 +58,12 @@ Y_pred_prob = mvp_model.predict_proba(X_test)[:, 1]  # Use the probability of be
 precision, recall, _ = precision_recall_curve(Y_test, Y_pred_prob)
 pr_auc = auc(recall, precision)
 
-print(f"PR AUC Score: {pr_auc}")"""
+threshold = 0.4  # You can adjust the threshold as needed
+Y_pred = (Y_pred_prob > threshold).astype(int)
+f1 = f1_score(Y_test, Y_pred)
+
+print(f"PR AUC Score: {pr_auc}")
+print(f'f1 Score: {f1}')"""
 
 
 # Get feature importances

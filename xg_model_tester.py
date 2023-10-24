@@ -45,7 +45,7 @@ def inSampleTesting(model):
 
 
 # Step 1: Load the AL model
-model = joblib.load('mvp_model.pkl')
+model = joblib.load('mvp_model_test.pkl')
 
 # Step 2: Load the testing data (replace '2023_composite.csv' with your testing data file)
 data = pd.read_csv('./testing_data/2000_composite.csv')
@@ -85,8 +85,6 @@ print(top_5_mvp_candidates_nl)
 
 #inSampleTesting(model)
 
-# in sample testing (AL): 16/16
-# in sample testing (NL): 17/17
 
 
 
