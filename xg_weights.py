@@ -4,6 +4,8 @@ from sklearn.model_selection import train_test_split
 from xgboost import XGBRegressor, XGBClassifier
 from sklearn.metrics import precision_recall_curve, auc, f1_score
 import joblib 
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 # Load your dataframe (replace 'data.csv' with your actual data file)
 data = pd.read_csv('./training_data/full_season_data/tester.csv')
@@ -89,8 +91,24 @@ print(nl_sorted_features.head())
 print("Total Results: ")
 print(mvp_sorted_features)
 
+# Create a bar plot for feature importances
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Importance', y='Feature', data=mvp_sorted_features.head(12))  # Change '10' to the number of top features you want to display
+plt.title('Top Feature Importances for MVP Model', fontweight='bold')
+plt.xlabel('Weight', fontweight='bold')
+plt.ylabel('Statistic', fontweight='bold')
+
+# Adjust the plot's margins to prevent y-label from getting cut off
+plt.subplots_adjust(left=0.2)  # Increase the left margin as needed
+
+# Save the plot as a PDF file
+plt.savefig('feature_importances_mvp_model.pdf', format='pdf')
+
+# Close the plot (if you don't want to display it)
+plt.close()
+
 #joblib.dump(al_model, 'al_xgb_model.pkl')
 #joblib.dump(nl_model, 'nl_xgb_model.pkl')
-joblib.dump(mvp_model, 'mvp_model.pkl')
+#joblib.dump(mvp_model, 'mvp_model.pkl')
     
     
