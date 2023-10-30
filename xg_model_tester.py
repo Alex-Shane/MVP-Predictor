@@ -18,7 +18,7 @@ def inSampleTesting(model):
         nl_data = data[data['Lg'] == 'NL']
 
         # Define columns to be dropped
-        columns_to_drop = ['MVP', 'Lg', 'Rk', 'First Name', 'Last Name', 'Tm', 'Pos']
+        columns_to_drop = ['MVP', 'Lg', 'Rk', 'First Name', 'Last Name', 'Tm', 'Pos', 'G', 'GS', 'PA']
 
         # Step 4: Prepare the data for predictions
         X_al = al_data.drop(columns=columns_to_drop)  # Remove the target variable
@@ -48,14 +48,14 @@ def inSampleTesting(model):
 model = joblib.load('mvp_model_test.pkl')
 
 # Step 2: Load the testing data (replace '2023_composite.csv' with your testing data file)
-data = pd.read_csv('./testing_data/2000_composite.csv')
+data = pd.read_csv('./testing_data/2003_composite.csv')
 
 # Step 3: Filter the data by league
 al_data = data[data['Lg'] == 'AL']
 nl_data = data[data['Lg'] == 'NL']
 
 # Define columns to be dropped
-columns_to_drop = ['MVP', 'Lg', 'Rk', 'First Name', 'Last Name', 'Tm', 'Pos']
+columns_to_drop = ['MVP', 'Lg', 'Rk', 'First Name', 'Last Name', 'Tm', 'Pos','GS', 'G', 'PA']
 
 # Step 4: Prepare the data for predictions
 X_al = al_data.drop(columns=columns_to_drop)  # Remove the target variable

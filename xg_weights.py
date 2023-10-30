@@ -22,7 +22,7 @@ nl_data = data[data['Lg'] == 'NL']
 #nl_data = pd.get_dummies(nl_data, columns=categorical_vars)
 
 # Define columns to be dropped
-columns_to_drop = ['MVP', 'Lg', 'Rk', 'First Name', 'Last Name', 'Tm', 'Pos']
+columns_to_drop = ['MVP', 'Lg', 'Rk', 'First Name', 'Last Name', 'Tm', 'Pos', 'GS', 'G', 'PA']
 
 # Define features and target
 X_al = al_data.drop(columns=columns_to_drop)  # Remove unnecessary columns
@@ -102,13 +102,14 @@ plt.ylabel('Statistic', fontweight='bold')
 plt.subplots_adjust(left=0.2)  # Increase the left margin as needed
 
 # Save the plot as a PDF file
-plt.savefig('feature_importances_mvp_model.pdf', format='pdf')
+#plt.savefig('feature_importances_mvp_model.pdf', format='pdf')
+plt.show()
 
 # Close the plot (if you don't want to display it)
 plt.close()
 
 #joblib.dump(al_model, 'al_xgb_model.pkl')
 #joblib.dump(nl_model, 'nl_xgb_model.pkl')
-#joblib.dump(mvp_model, 'mvp_model.pkl')
+joblib.dump(mvp_model, 'mvp_model_test.pkl')
     
     

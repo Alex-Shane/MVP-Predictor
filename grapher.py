@@ -16,7 +16,7 @@ ax = sns.barplot(x=evaluation_metrics, y=values, palette=custom_palette)
 # Add labels and a title
 plt.xlabel('Evaluation Metric', fontweight='bold')
 plt.ylabel('Metric Value', fontweight='bold')
-plt.title('Comparison of Evaluation Metrics for Your Model', fontweight='bold')
+plt.title('Evaluation Metrics for MVP Predictor: ML Model', fontweight='bold')
 
 # Display the values on top of the bars
 for p in ax.patches:
