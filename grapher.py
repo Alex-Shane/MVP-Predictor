@@ -1,33 +1,6 @@
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-# Define the evaluation metrics and their values
-evaluation_metrics = ['PR AUC Score', 'F1 Score']
-values = [0.393, 0.5]  # Replace with your actual metric values
-
-# Choose a different color palette (e.g., "Set1")
-custom_palette = sns.color_palette("Set1")
-
-# Create a Seaborn bar plot with horizontal grid lines removed and a custom color palette
-sns.set(style="whitegrid", font_scale=1.2, rc={"lines.linewidth": 2, 'grid.linestyle': '--', 'axes.grid': False})
-plt.figure(figsize=(8, 6))
-ax = sns.barplot(x=evaluation_metrics, y=values, palette=custom_palette)
-
-# Add labels and a title
-plt.xlabel('Evaluation Metric', fontweight='bold')
-plt.ylabel('Metric Value', fontweight='bold')
-plt.title('Evaluation Metrics for MVP Predictor: ML Model', fontweight='bold')
-
-# Display the values on top of the bars
-for p in ax.patches:
-    ax.annotate(str(round(p.get_height(), 2)), (p.get_x() + p.get_width() / 2., p.get_height()), ha='center', va='bottom', fontsize=12)
-
-# Save the plot as a PDF file
-plt.savefig('evaluation_metrics_mvp_model.pdf', format='pdf')
-
-# Close the plot (if you don't want to display it)
-plt.close()
-
 correct = 5
 second = 1
 third = 2
