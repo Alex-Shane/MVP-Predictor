@@ -28,11 +28,11 @@ plt.savefig('evaluation_metrics_mvp_model.pdf', format='pdf')
 # Close the plot (if you don't want to display it)
 plt.close()
 
-correct = 3
-second = 3
-third = 1 
+correct = 5
+second = 1
+third = 2
 fifth = 1
-miss = 2
+miss = 1
 
 # Labels for the pie chart
 labels = ['Correct', 'MVP 2nd', 'MVP 3rd', 'MVP 5th', 'MVP not in top 5']

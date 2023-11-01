@@ -60,7 +60,7 @@ Y_pred_prob = mvp_model.predict_proba(X_test)[:, 1]  # Use the probability of be
 precision, recall, _ = precision_recall_curve(Y_test, Y_pred_prob)
 pr_auc = auc(recall, precision)
 
-threshold = 0.4  # You can adjust the threshold as needed
+threshold = 0.4 # You can adjust the threshold as needed
 Y_pred = (Y_pred_prob > threshold).astype(int)
 f1 = f1_score(Y_test, Y_pred)
 
@@ -110,6 +110,6 @@ plt.close()
 
 #joblib.dump(al_model, 'al_xgb_model.pkl')
 #joblib.dump(nl_model, 'nl_xgb_model.pkl')
-joblib.dump(mvp_model, 'mvp_model_test.pkl')
+#joblib.dump(mvp_model, 'mvp_model_test.pkl')
     
     
