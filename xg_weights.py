@@ -102,7 +102,7 @@ plt.ylabel('Statistic', fontweight='bold')
 plt.subplots_adjust(left=0.2)  # Increase the left margin as needed
 
 # Save the plot as a PDF file
-#plt.savefig('feature_importances_mvp_model.pdf', format='pdf')
+plt.savefig('feature_importances_mvp_model.pdf', format='pdf')
 plt.show()
 
 # Close the plot (if you don't want to display it)

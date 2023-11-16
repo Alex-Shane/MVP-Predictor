@@ -56,6 +56,43 @@ plt.savefig('mvp_predictions_manual_model.pdf', format='pdf')
 
 plt.close() 
 
+stats = {
+    'BA': 3.999444444,  
+    'HR': 3.39748928,  
+    'RBI': 2.20860146, 
+    'OPS': 5.6818232,
+    'WAR': 10.1,
+    'SB': 0.71136828, 
+    'ROBA': 5.8043232,
+    'DEF': 0.18179077,
+    'Win%': 6.37843602
+}
+
+
+# Sort the stats by importance in descending order
+sorted_stats = {k: v for k, v in sorted(stats.items(), key=lambda item: item[1], reverse=True)}
+
+# Extract the sorted keys and values
+features = list(reversed(list(sorted_stats.keys())))
+importances = list(reversed(list(sorted_stats.values())))
+
+# Define a list of colors for each bar
+colors = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22"]
+
+# Create a bar plot for feature importances with custom colors
+plt.figure(figsize=(10, 6))
+plt.barh(features, importances, color=colors)
+plt.title('Feature Importances for Manual MVP Model', fontweight='bold')
+plt.xlabel('Assigned Weight', fontweight='bold')
+plt.ylabel('Statistic', fontweight='bold')
+
+
+# Save the plot as a PDF file
+plt.savefig('feature_importances_manual_mvp_model.pdf', format='pdf')
+
+# Close the plot (if you don't want to display it)
+plt.close()
+
 
 
 
