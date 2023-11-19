@@ -9,39 +9,16 @@ Created on Mon Oct  9 20:06:19 2023
 import pandas as pd
 import warnings
 
-
-# Define the NL weights for each statistic (customize these based on your preferences)
-NL_BAW = 2.38888889    # Weight for Batting Average
-NL_HRW = 2.346978557   # Weight for Home Runs
-NL_RBIW = 2.211202938  # Weight for RBIs
-NL_OPSW = 4.864646464  # Weight for OPS
-NL_WARW = 6.86039886   # Weight for WAR
-NL_SBW = 0.5597396559  # Weight for Stolen Bases
-NL_ROBAW = 4.864646464  # Weight for rOBA
-NL_DEFW = 0.1955815464  # Weight for rTot(defense)
-NL_TEAMW = 4.053872054  # Weight for team ranking (by win%)
-
-# Define the AL weights for each statistic (customize these based on your preferences)
-AL_BAW = 2.77       # Weight for Batting Average
-AL_HRW = 2.248      # Weight for HRs
-AL_RBIW = 2.206     # Weight for RBIs
-AL_OPSW = 6.499     # Weight for OPS
-AL_WARW = 9.929     # Weight for WAR
-AL_SBW = 0.863      # Weight for SBs
-AL_ROBAW = 6.744    # Weight for rOBA
-AL_DEFW = 0.168     # Weight for defense
-AL_TEAMW = 4.703    # Weight for team performance 
-
 #Define standardized weights (average of both leagues) for each stat
 BAW = 3.999444444  # Weight for Batting Average
 HRW = 3.39748928  # Weight for Home Runs
 RBIW = 2.20860146  # Weight for RBIs
 OPSW = 5.6818232  # Weight for Stolen Bases
-WARW = 10.1
-SBW = 0.71136828 
-ROBAW = 5.8043232
-DEFW = 0.18179077
-TEAMW = 6.37843602
+WARW = 10.1       # WEight for WAR
+SBW = 0.71136828  # Weigth for SB
+ROBAW = 5.8043232 # Weigth for rOBA
+DEFW = 0.18179077 # weight for DEF
+TEAMW = 6.37843602 # weight for win%
 
 
 def inSampleTesting():
@@ -53,7 +30,7 @@ def inSampleTesting():
         al_data = data[data['Lg'] == 'AL']
         nl_data = data[data['Lg'] == 'NL']
 
-        # Iterate through each statistic column and calculate the rank
+        # rank each player by each stat
         for stat in ['BA', 'HR', 'RBI', 'SB', 'WAR', 'OPS', 'rOBA', 'Rtot', 'WinPercentage']:
             column_name = stat + '_Rank'
             al_data.loc[:, column_name] = al_data[stat].rank(
@@ -61,7 +38,7 @@ def inSampleTesting():
             nl_data.loc[:, column_name] = nl_data[stat].rank(
                 ascending=False, method='dense')
 
-        # Calculate MVP Predictor score for each player
+        # calculate MVP Predictor score for each player
         al_data['MVP_Predictor'] = (
             BAW * al_data['BA_Rank'] +
             HRW * al_data['HR_Rank'] +
@@ -86,12 +63,7 @@ def inSampleTesting():
             TEAMW * nl_data['WinPercentage_Rank']
         )
         
-        """al_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
-        al_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 30
-        nl_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
-        nl_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 30"""
-        
-        # Identify the AL and NL triple crown winners and adjust their MVP Predictor score
+        # check for triple crown winner
         al_triple_crown_winner = al_data[(al_data['BA_Rank'] == 1) & (al_data['HR_Rank'] == 1) & (al_data['RBI_Rank'] == 1)]
         if not al_triple_crown_winner.empty:
             al_data.loc[al_triple_crown_winner.index[0], 'MVP_Predictor'] -= 100
@@ -100,27 +72,9 @@ def inSampleTesting():
         if not nl_triple_crown_winner.empty:
             nl_data.loc[nl_triple_crown_winner.index[0], 'MVP_Predictor'] -= 100
 
-        # Sort the players by MVP Predictor score in ascending order
+        # sort the players by MVP Predictor score in ascending order
         al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
         nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)
-        
-        """# Create a new column to count how many of the specified stats each player ranks first in
-        al_data['Num_Top_Ranks'] = al_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
-        nl_data['Num_Top_Ranks'] = nl_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
-
-        # Subtract points based on the number of top ranks
-        al_data['MVP_Predictor'] -= 30 * (al_data['Num_Top_Ranks'] == 1)
-        al_data['MVP_Predictor'] -= 60 * (al_data['Num_Top_Ranks'] == 2)
-        al_data['MVP_Predictor'] -= 90 * (al_data['Num_Top_Ranks'] == 3)
-
-        # Subtract points based on the number of top ranks
-        nl_data['MVP_Predictor'] -= 30 * (nl_data['Num_Top_Ranks'] == 1)
-        nl_data['MVP_Predictor'] -= 60 * (nl_data['Num_Top_Ranks'] == 2)
-        nl_data['MVP_Predictor'] -= 90 * (nl_data['Num_Top_Ranks'] == 3)
-
-        # Sort the players by MVP Predictor score in ascending order
-        al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
-        nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)"""
 
         # get the predicted MVP(s)
         al_mvp = al_data[['Last Name', 'MVP_Predictor']].head(5)
@@ -131,12 +85,6 @@ def inSampleTesting():
         print(f'Predicted {x} NL MVP: {nl_mvp}')
 
 warnings.filterwarnings("ignore")
-#inSampleTesting()
-# AL: got Morneau wrong (said Berkman), got Pedroia wrong (said Rodriguez), got Cabera wrong (said Trout), got Donaldson wrong (said Trout), got Altuve wrong (said Judge), got Betts wrong (said Trout),
-    # accuracy = 12/16 = 75%% with standardized weights
-# NL: got Howard wrong (said Pujols), got Rollins wrong (said Pujols), got Votto wrong (said Pujols), got Posey wrong (said Braun), got McCutchen wrong (said Goldschmidt), got Bryant wrong (said freeman), got Stanton wrong (said Votto), got Bellinger wrong (said Rendon), got Harper wrong (said Soto)
-    # accuracy = 6/16 = 38% with standardized weights (got McCutchen right)
-# total accuracy: 19/33
     
     
 # Load the CSV file containing player statistics
@@ -144,7 +92,7 @@ data = pd.read_csv('./testing_data/2023_composite.csv')
 al_data = data[data['Lg'] == 'AL']
 nl_data = data[data['Lg'] == 'NL']
 
-# Iterate through each statistic column and calculate the rank
+# rank each player by each stat
 for stat in ['BA', 'HR', 'RBI', 'SB', 'WAR', 'OPS', 'rOBA', 'Rtot', 'WinPercentage']:
     column_name = stat + '_Rank'
     al_data.loc[:, column_name] = al_data[stat].rank(
@@ -152,7 +100,7 @@ for stat in ['BA', 'HR', 'RBI', 'SB', 'WAR', 'OPS', 'rOBA', 'Rtot', 'WinPercenta
     nl_data.loc[:, column_name] = nl_data[stat].rank(
         ascending=False, method='dense')
 
-# Calculate MVP Predictor score for each player
+# calculate MVP Predictor score for each player
 al_data['MVP_Predictor'] = (
     BAW * al_data['BA_Rank'] +
     HRW * al_data['HR_Rank'] +
@@ -177,12 +125,8 @@ nl_data['MVP_Predictor'] = (
     TEAMW * nl_data['WinPercentage_Rank']
 )
 
-"""al_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
-al_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 20
-nl_data.loc[data['Pos'] == '1B', 'MVP_Predictor'] += 30
-nl_data.loc[data['Pos'] == 'OF', 'MVP_Predictor'] -= 20"""
 
-# Identify the AL and NL triple crown winners and adjust their MVP Predictor score
+# adjust for triple crown
 al_triple_crown_winner = al_data[(al_data['BA_Rank'] == 1) & (al_data['HR_Rank'] == 1) & (al_data['RBI_Rank'] == 1)]
 if not al_triple_crown_winner.empty:
     al_data.loc[al_triple_crown_winner.index[0], 'MVP_Predictor'] -= 100
@@ -194,24 +138,6 @@ if not nl_triple_crown_winner.empty:
 # Sort the players by MVP Predictor score in ascending order
 al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
 nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)
-
-# Create a new column to count how many of the specified stats each player ranks first in
-"""al_data['Num_Top_Ranks'] = al_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
-nl_data['Num_Top_Ranks'] = nl_data[['BA_Rank', 'HR_Rank', 'RBI_Rank']].eq(1).sum(axis=1)
-
-# Subtract points based on the number of top ranks
-al_data['MVP_Predictor'] -= 30 * (al_data['Num_Top_Ranks'] == 1)
-al_data['MVP_Predictor'] -= 60 * (al_data['Num_Top_Ranks'] == 2)
-al_data['MVP_Predictor'] -= 90 * (al_data['Num_Top_Ranks'] == 3)
-
-# Subtract points based on the number of top ranks
-nl_data['MVP_Predictor'] -= 30 * (nl_data['Num_Top_Ranks'] == 1)
-nl_data['MVP_Predictor'] -= 60 * (nl_data['Num_Top_Ranks'] == 2)
-nl_data['MVP_Predictor'] -= 90 * (nl_data['Num_Top_Ranks'] == 3)
-
-# Sort the players by MVP Predictor score in ascending order
-al_data = al_data.sort_values(by='MVP_Predictor', ascending=True)
-nl_data = nl_data.sort_values(by='MVP_Predictor', ascending=True)"""
 
 # Print the predicted MVP(s)
 print(al_data[['Last Name', 'MVP_Predictor']].head(5))
